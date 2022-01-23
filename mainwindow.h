@@ -19,7 +19,7 @@ public:
 private slots:
     void on_pushButtonLoad_clicked();
 
-    void on_tableView_activated(const QModelIndex &index);
+    void on_tableView_clicked(const QModelIndex &index);
 
     void on_pushButtonUpdate_clicked();
 

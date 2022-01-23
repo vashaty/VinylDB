@@ -36,7 +36,7 @@ void MainWindow::on_pushButtonLoad_clicked()
 }
 
 
-void MainWindow::on_tableView_activated(const QModelIndex &index)
+void MainWindow::on_tableView_clicked(const QModelIndex &index)
 {
     QString selected= index.sibling(index.row(), 0).data().toString();
     Database conn;
