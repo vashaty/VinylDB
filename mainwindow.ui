@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>972</width>
-    <height>576</height>
+    <height>610</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -81,7 +81,7 @@
       <x>50</x>
       <y>391</y>
       <width>261</width>
-      <height>142</height>
+      <height>170</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -117,6 +117,13 @@
            </property>
           </widget>
          </item>
+         <item>
+          <widget class="QLabel" name="labelImage">
+           <property name="text">
+            <string>Image:</string>
+           </property>
+          </widget>
+         </item>
         </layout>
        </item>
        <item>
@@ -136,6 +143,13 @@
          </item>
          <item>
           <widget class="QLineEdit" name="lineEditGenre"/>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="lineEditImage">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
@@ -214,6 +228,19 @@
     </property>
     <property name="text">
      <string>Search</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>320</x>
+      <y>510</y>
+      <width>80</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>SELECT COVER</string>
     </property>
    </widget>
   </widget>
