@@ -32,7 +32,8 @@ void MainWindow::loadTableView(){
     ui->tableView->setModel(model);
 
     conn.connClose();
-    qDebug() << (model->rowCount());
+//    qDebug() << (model->rowCount());
+    ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 }
 
 void MainWindow::on_pushButtonLoad_clicked()
@@ -43,7 +44,9 @@ void MainWindow::on_pushButtonLoad_clicked()
 
 void MainWindow::drawImage(){
     QPixmap image(ui->lineEditImage->text());
-    ui->labelShowImage->setPixmap(image.scaled(ui->labelShowImage->width(),ui->labelShowImage->height(),Qt::KeepAspectRatio,Qt::SmoothTransformation));
+    ui->labelShowImage->setPixmap(image.scaled(ui->labelShowImage->width(),
+                                               ui->labelShowImage->height(),
+                                               Qt::KeepAspectRatio,Qt::SmoothTransformation));
 }
 
 void MainWindow::on_tableView_clicked(const QModelIndex &index)
@@ -81,6 +84,7 @@ void MainWindow::on_tableView_clicked(const QModelIndex &index)
 void MainWindow::on_pushButtonUpdate_clicked()
 {
    if(checkIfLineEditsEmpty()) return;
+
    Database conn;
 
    QString id, artist, album, year, songs, genre, fileName;
@@ -111,14 +115,17 @@ void MainWindow::on_pushButtonUpdate_clicked()
    }
 
    conn.connOpen();
+
    QSqlQuery qry;
-   qry.prepare("update vinyl set artist ='"+artist+"', albumName ='"+album+"', year ='"+year+"', songsCount ='"+songs+"', genre ='"+genre+"', imageSrc ='"+fileName+"' where id ='"+id+"'");
+   qry.prepare("update vinyl set artist ='"+artist+"', albumName ='"+album+"', year ='"+year+"',songsCount ='"+songs+"', genre ='"+genre+"', imageSrc ='"+fileName+"' where id ='"+id+"'");
+
    if(qry.exec()){
        QMessageBox::information(this,tr("Edit"), tr("Updated"));
        conn.connClose();
    }else{
        QMessageBox::critical(this,tr("error:"), qry.lastError().text());
    }
+
    loadTableView();
    drawImage();
 }
@@ -167,8 +174,7 @@ void MainWindow::on_pushButtonAddNew_clicked()
 
     conn.connOpen();
     QSqlQuery qry;
-    qry.prepare("insert into vinyl (artist, albumName, year, songsCount, genre, imageSrc) "
-                "values ('"+artist+"','"+album+"','"+year+"','"+songs+"','"+genre+"','"+fileName+"')");
+    qry.prepare("insert into vinyl (artist, albumName, year, songsCount, genre, imageSrc) values ('"+artist+"','"+album+"','"+year+"','"+songs+"','"+genre+"','"+fileName+"')");
     if(qry.exec()){
         QMessageBox::information(this,tr("Add new"), tr("Added"));
         conn.connClose();

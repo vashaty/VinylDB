@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>972</width>
+    <width>833</width>
     <height>610</height>
    </rect>
   </property>
@@ -19,7 +19,7 @@
      <rect>
       <x>20</x>
       <y>40</y>
-      <width>921</width>
+      <width>791</width>
       <height>331</height>
      </rect>
     </property>
@@ -32,6 +32,9 @@
     <property name="selectionBehavior">
      <enum>QAbstractItemView::SelectRows</enum>
     </property>
+    <attribute name="horizontalHeaderCascadingSectionResizes">
+     <bool>false</bool>
+    </attribute>
     <attribute name="verticalHeaderVisible">
      <bool>false</bool>
     </attribute>
@@ -39,14 +42,14 @@
    <widget class="QPushButton" name="pushButtonLoad">
     <property name="geometry">
      <rect>
-      <x>850</x>
-      <y>450</y>
+      <x>730</x>
+      <y>10</y>
       <width>80</width>
       <height>21</height>
      </rect>
     </property>
     <property name="text">
-     <string>LOAD</string>
+     <string>Reset</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButtonUpdate">
@@ -217,9 +220,9 @@
    <widget class="QLineEdit" name="lineEditSearch">
     <property name="geometry">
      <rect>
-      <x>740</x>
+      <x>470</x>
       <y>10</y>
-      <width>113</width>
+      <width>161</width>
       <height>21</height>
      </rect>
     </property>
@@ -227,7 +230,7 @@
    <widget class="QPushButton" name="pushButtonSearch">
     <property name="geometry">
      <rect>
-      <x>860</x>
+      <x>640</x>
       <y>10</y>
       <width>80</width>
       <height>21</height>
@@ -269,7 +272,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>972</width>
+     <width>833</width>
      <height>20</height>
     </rect>
    </property>
