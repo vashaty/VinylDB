@@ -170,7 +170,7 @@ void MainWindow::on_pushButtonSearch_clicked()
     conn.connOpen();
     QSqlQuery * qry = new QSqlQuery(conn.db);
 
-    qry->prepare("select * from vinyl where artist like '%"+searchString+"%' ");
+    qry->prepare("select * from vinyl where artist like '%"+searchString+"%' or albumName like '%"+searchString+"%' or genre like '%"+searchString+"%' or year like '%"+searchString+"%'");
 
     qry->exec();
     model->setQuery(*qry);
