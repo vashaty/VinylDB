@@ -22,7 +22,7 @@ void MainWindow::loadTableView(){
     conn.connOpen();
     QSqlQuery * qry = new QSqlQuery(conn.db);
 
-    qry->prepare("select * from vinyl");
+    qry->prepare("select id as ID, artist as Artist, albumName as Album, songsCount as Songs, year as Year, genre as Genre, imageSrc as 'Image path' from vinyl");
 
     qry->exec();
     model->setQuery(*qry);
@@ -170,7 +170,7 @@ void MainWindow::on_pushButtonSearch_clicked()
     conn.connOpen();
     QSqlQuery * qry = new QSqlQuery(conn.db);
 
-    qry->prepare("select * from vinyl where artist like '%"+searchString+"%' or albumName like '%"+searchString+"%' or genre like '%"+searchString+"%' or year like '%"+searchString+"%'");
+    qry->prepare("select id as ID, artist as Artist, albumName as Album, songsCount as Songs, year as Year, genre as Genre, imageSrc as 'Image path' from vinyl where artist like '%"+searchString+"%' or albumName like '%"+searchString+"%' or genre like '%"+searchString+"%' or year like '%"+searchString+"%'");
 
     qry->exec();
     model->setQuery(*qry);

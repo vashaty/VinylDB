@@ -213,7 +213,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>PushButton</string>
+     <string>Search</string>
     </property>
    </widget>
   </widget>
