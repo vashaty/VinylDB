@@ -6,7 +6,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
+    loadTableView();
 
 }
 
@@ -15,9 +15,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-
-void MainWindow::on_pushButtonLoad_clicked()
-{
+void MainWindow::loadTableView(){
     Database conn;
     QSqlQueryModel * model = new QSqlQueryModel();
 
@@ -32,6 +30,11 @@ void MainWindow::on_pushButtonLoad_clicked()
 
     conn.connClose();
     qDebug() << (model->rowCount());
+}
+
+void MainWindow::on_pushButtonLoad_clicked()
+{
+    loadTableView();
 
 }
 
@@ -86,14 +89,22 @@ void MainWindow::on_pushButtonUpdate_clicked()
    QSqlQuery qry;
    qry.prepare("update vinyl set artist ='"+artist+"', albumName ='"+album+"', year ='"+year+"', songsCount ='"+songs+"', genre ='"+genre+"' where id ='"+id+"'");
    if(qry.exec()){
-       QMessageBox::critical(this,tr("Edit"), tr("Updated"));
+       QMessageBox::information(this,tr("Edit"), tr("Updated"));
        conn.connClose();
    }else{
        QMessageBox::critical(this,tr("error:"), qry.lastError().text());
    }
-   MainWindow::on_pushButtonLoad_clicked();
+   loadTableView();
 }
 
+void MainWindow::clearLineEdits(){
+    ui->lineEditArtist->clear();
+    ui->lineEditAlbum->clear();
+    ui->lineEditGenre->clear();
+    ui->lineEditId->clear();
+    ui->lineEditSongs->clear();
+    ui->lineEditYear->clear();
+}
 
 void MainWindow::on_pushButtonAddNew_clicked()
 {
@@ -114,19 +125,14 @@ void MainWindow::on_pushButtonAddNew_clicked()
     QSqlQuery qry;
     qry.prepare("insert into vinyl (artist, albumName, year, songsCount, genre) values ('"+artist+"','"+album+"','"+year+"','"+songs+"','"+genre+"')");
     if(qry.exec()){
-        QMessageBox::critical(this,tr("Edit"), tr("Added"));
+        QMessageBox::information(this,tr("Add new"), tr("Added"));
         conn.connClose();
     }else{
         QMessageBox::critical(this,tr("error:"), qry.lastError().text());
     }
-    MainWindow::on_pushButtonLoad_clicked();
+    loadTableView();
+    clearLineEdits();
 
-    ui->lineEditArtist->clear();
-    ui->lineEditAlbum->clear();
-    ui->lineEditGenre->clear();
-    ui->lineEditId->clear();
-    ui->lineEditSongs->clear();
-    ui->lineEditYear->clear();
 }
 
 
@@ -144,18 +150,33 @@ void MainWindow::on_pushButtonRemove_clicked()
     QSqlQuery qry;
     qry.prepare("delete from vinyl where id='"+id+"'");
     if(qry.exec()){
-        QMessageBox::critical(this,tr("Edit"), tr("Added"));
+        QMessageBox::information(this,tr("Remove"), tr("Removed"));
         conn.connClose();
     }else{
         QMessageBox::critical(this,tr("error:"), qry.lastError().text());
     }
-    MainWindow::on_pushButtonLoad_clicked();
 
-    ui->lineEditArtist->clear();
-    ui->lineEditAlbum->clear();
-    ui->lineEditGenre->clear();
-    ui->lineEditId->clear();
-    ui->lineEditSongs->clear();
-    ui->lineEditYear->clear();
+    loadTableView();
+    clearLineEdits();
+}
+
+
+void MainWindow::on_pushButtonSearch_clicked()
+{
+    QString searchString = ui->lineEditSearch->text();
+    Database conn;
+    QSqlQueryModel * model = new QSqlQueryModel();
+
+    conn.connOpen();
+    QSqlQuery * qry = new QSqlQuery(conn.db);
+
+    qry->prepare("select * from vinyl where artist like '%"+searchString+"%' ");
+
+    qry->exec();
+    model->setQuery(*qry);
+    ui->tableView->setModel(model);
+
+    conn.connClose();
+    qDebug() << (model->rowCount());
 }
 

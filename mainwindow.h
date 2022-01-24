@@ -27,6 +27,12 @@ private slots:
 
     void on_pushButtonRemove_clicked();
 
+    void clearLineEdits();
+
+    void loadTableView();
+
+    void on_pushButtonSearch_clicked();
+
 private:
     Ui::MainWindow *ui;
 };
