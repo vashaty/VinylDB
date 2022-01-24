@@ -72,10 +72,10 @@
      </rect>
     </property>
     <property name="text">
-     <string>ADDNEW</string>
+     <string>ADD NEW</string>
     </property>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>50</x>
@@ -179,6 +179,19 @@
       </layout>
      </item>
     </layout>
+   </widget>
+   <widget class="QPushButton" name="pushButtonRemove">
+    <property name="geometry">
+     <rect>
+      <x>320</x>
+      <y>450</y>
+      <width>80</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>REMOVE</string>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">

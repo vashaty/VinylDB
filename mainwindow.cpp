@@ -129,3 +129,33 @@ void MainWindow::on_pushButtonAddNew_clicked()
     ui->lineEditYear->clear();
 }
 
+
+void MainWindow::on_pushButtonRemove_clicked()
+{
+    Database conn;
+
+    QString id = ui->lineEditId->text();
+
+    if(!conn.connOpen()){
+        qDebug()<<"Failed to open database";
+        return;
+    }
+    conn.connOpen();
+    QSqlQuery qry;
+    qry.prepare("delete from vinyl where id='"+id+"'");
+    if(qry.exec()){
+        QMessageBox::critical(this,tr("Edit"), tr("Added"));
+        conn.connClose();
+    }else{
+        QMessageBox::critical(this,tr("error:"), qry.lastError().text());
+    }
+    MainWindow::on_pushButtonLoad_clicked();
+
+    ui->lineEditArtist->clear();
+    ui->lineEditAlbum->clear();
+    ui->lineEditGenre->clear();
+    ui->lineEditId->clear();
+    ui->lineEditSongs->clear();
+    ui->lineEditYear->clear();
+}
+
