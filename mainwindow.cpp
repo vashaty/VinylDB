@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include <QFileDialog>
 #include <QDir>
+#include <QPixmap>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -40,6 +41,10 @@ void MainWindow::on_pushButtonLoad_clicked()
 
 }
 
+void MainWindow::drawImage(){
+    QPixmap image(ui->lineEditImage->text());
+    ui->labelShowImage->setPixmap(image.scaled(ui->labelShowImage->width(),ui->labelShowImage->height(),Qt::KeepAspectRatio,Qt::SmoothTransformation));
+}
 
 void MainWindow::on_tableView_clicked(const QModelIndex &index)
 {
@@ -69,6 +74,7 @@ void MainWindow::on_tableView_clicked(const QModelIndex &index)
     else{
         QMessageBox::critical(this,tr("Error"),qry.lastError().text());
     }
+    drawImage();
 }
 
 
@@ -113,6 +119,7 @@ void MainWindow::on_pushButtonUpdate_clicked()
        QMessageBox::critical(this,tr("error:"), qry.lastError().text());
    }
    loadTableView();
+   drawImage();
 }
 
 void MainWindow::clearLineEdits(){
@@ -224,6 +231,7 @@ void MainWindow::on_pushButton_clicked()
         ui->lineEditImage->setText(fileName);
 
     }
+    drawImage();
 
 }
 

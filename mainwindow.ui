@@ -243,6 +243,19 @@
      <string>SELECT COVER</string>
     </property>
    </widget>
+   <widget class="QLabel" name="labelShowImage">
+    <property name="geometry">
+     <rect>
+      <x>550</x>
+      <y>400</y>
+      <width>191</width>
+      <height>161</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

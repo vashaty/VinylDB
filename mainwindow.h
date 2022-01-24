@@ -35,6 +35,8 @@ private slots:
 
     void on_pushButton_clicked();
 
+    void drawImage();
+
 private:
     Ui::MainWindow *ui;
 };
