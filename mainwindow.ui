@@ -263,26 +263,6 @@
      <string/>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEditYear">
-    <property name="geometry">
-     <rect>
-      <x>600</x>
-      <y>480</y>
-      <width>76</width>
-      <height>22</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="lineEditSongs">
-    <property name="geometry">
-     <rect>
-      <x>520</x>
-      <y>540</y>
-      <width>90</width>
-      <height>22</height>
-     </rect>
-    </property>
-   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

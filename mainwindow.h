@@ -37,6 +37,8 @@ private slots:
 
     void drawImage();
 
+    bool checkIfLineEditsEmpty();
+
 private:
     Ui::MainWindow *ui;
 };

@@ -64,8 +64,6 @@ void MainWindow::on_tableView_clicked(const QModelIndex &index)
             ui->lineEditId->setText(qry.value(0).toString());
             ui->lineEditArtist->setText(qry.value(1).toString());
             ui->lineEditAlbum->setText(qry.value(2).toString());
-//            ui->lineEditYear->setText(qry.value(3).toString());
-//            ui->lineEditSongs->setText(qry.value(4).toString());
             ui->lineEditGenre->setText(qry.value(5).toString());
             ui->lineEditImage->setText(qry.value(6).toString());
             ui->spinBoxYear->setValue(qry.value(3).toInt());
@@ -82,6 +80,7 @@ void MainWindow::on_tableView_clicked(const QModelIndex &index)
 
 void MainWindow::on_pushButtonUpdate_clicked()
 {
+   if(checkIfLineEditsEmpty()) return;
    Database conn;
 
    QString id, artist, album, year, songs, genre, fileName;
@@ -136,6 +135,7 @@ void MainWindow::clearLineEdits(){
 
 void MainWindow::on_pushButtonAddNew_clicked()
 {
+    if(checkIfLineEditsEmpty()) return;
     Database conn;
 
     QString artist, album, year, songs, genre, fileName;
@@ -167,7 +167,8 @@ void MainWindow::on_pushButtonAddNew_clicked()
 
     conn.connOpen();
     QSqlQuery qry;
-    qry.prepare("insert into vinyl (artist, albumName, year, songsCount, genre, imageSrc) values ('"+artist+"','"+album+"','"+year+"','"+songs+"','"+genre+"','"+fileName+"')");
+    qry.prepare("insert into vinyl (artist, albumName, year, songsCount, genre, imageSrc) "
+                "values ('"+artist+"','"+album+"','"+year+"','"+songs+"','"+genre+"','"+fileName+"')");
     if(qry.exec()){
         QMessageBox::information(this,tr("Add new"), tr("Added"));
         conn.connClose();
@@ -236,5 +237,16 @@ void MainWindow::on_pushButton_clicked()
     }
     drawImage();
 
+}
+
+bool MainWindow::checkIfLineEditsEmpty(){
+    if(ui->lineEditAlbum->text().isEmpty() ||
+            ui->lineEditArtist->text().isEmpty() ||
+            ui->spinBoxSongs->text().isEmpty() ||
+            ui->spinBoxYear->text().isEmpty()){
+        QMessageBox::warning(this,tr("Error"), "All mandatory fields (*) are not filled!");
+        return true;
+    }
+    return false;
 }
 
