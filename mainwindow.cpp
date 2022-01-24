@@ -64,10 +64,12 @@ void MainWindow::on_tableView_clicked(const QModelIndex &index)
             ui->lineEditId->setText(qry.value(0).toString());
             ui->lineEditArtist->setText(qry.value(1).toString());
             ui->lineEditAlbum->setText(qry.value(2).toString());
-            ui->lineEditYear->setText(qry.value(3).toString());
-            ui->lineEditSongs->setText(qry.value(4).toString());
+//            ui->lineEditYear->setText(qry.value(3).toString());
+//            ui->lineEditSongs->setText(qry.value(4).toString());
             ui->lineEditGenre->setText(qry.value(5).toString());
             ui->lineEditImage->setText(qry.value(6).toString());
+            ui->spinBoxYear->setValue(qry.value(3).toInt());
+            ui->spinBoxSongs->setValue(qry.value(4).toInt());
         }
         conn.connClose();
     }
@@ -86,8 +88,8 @@ void MainWindow::on_pushButtonUpdate_clicked()
    id = ui->lineEditId->text();
    artist = ui->lineEditArtist->text();
    album = ui->lineEditAlbum->text();
-   year = ui->lineEditYear->text();
-   songs = ui->lineEditSongs->text();
+   year = ui->spinBoxYear->text();
+   songs = ui->spinBoxSongs->text();
    genre = ui->lineEditGenre->text();
    fileName = ui->lineEditImage->text();
 
@@ -99,7 +101,7 @@ void MainWindow::on_pushButtonUpdate_clicked()
        if(!QDir("Covers").exists()){
            QDir().mkdir("Covers");
        }
-       QString newFilePath = "Covers/"+ ui->lineEditAlbum->text() + "_" + ui->lineEditId->text()+ ".bmp";
+       QString newFilePath = "Covers/"+ album + "_" + year + ".bmp";
        if (QFile::exists(newFilePath))
        {
            QFile::remove(newFilePath);
@@ -127,8 +129,9 @@ void MainWindow::clearLineEdits(){
     ui->lineEditAlbum->clear();
     ui->lineEditGenre->clear();
     ui->lineEditId->clear();
-    ui->lineEditSongs->clear();
-    ui->lineEditYear->clear();
+    ui->spinBoxSongs->minimum();
+    ui->spinBoxYear->minimum();
+    ui->lineEditImage->clear();
 }
 
 void MainWindow::on_pushButtonAddNew_clicked()
@@ -138,8 +141,8 @@ void MainWindow::on_pushButtonAddNew_clicked()
     QString artist, album, year, songs, genre, fileName;
     artist = ui->lineEditArtist->text();
     album = ui->lineEditAlbum->text();
-    year = ui->lineEditYear->text();
-    songs = ui->lineEditSongs->text();
+    year = ui->spinBoxYear->text();
+    songs = ui->spinBoxSongs->text();
     genre = ui->lineEditGenre->text();
     fileName = ui->lineEditImage->text();
 
@@ -152,7 +155,7 @@ void MainWindow::on_pushButtonAddNew_clicked()
         if(!QDir("Covers").exists()){
             QDir().mkdir("Covers");
         }
-        QString newFilePath = "Covers/"+ ui->lineEditAlbum->text() + "_" + ui->lineEditId->text()+ ".bmp";
+        QString newFilePath = "Covers/"+ album + "_" + year + ".bmp";
         if (QFile::exists(newFilePath))
         {
             QFile::remove(newFilePath);

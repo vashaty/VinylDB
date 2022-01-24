@@ -81,7 +81,7 @@
       <x>50</x>
       <y>391</y>
       <width>261</width>
-      <height>170</height>
+      <height>171</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -165,20 +165,17 @@
         </widget>
        </item>
        <item>
-        <spacer name="horizontalSpacer">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
+        <widget class="QSpinBox" name="spinBoxYear">
+         <property name="minimum">
+          <number>1400</number>
          </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>52</width>
-           <height>20</height>
-          </size>
+         <property name="maximum">
+          <number>9999</number>
          </property>
-        </spacer>
-       </item>
-       <item>
-        <widget class="QLineEdit" name="lineEditYear"/>
+         <property name="value">
+          <number>1900</number>
+         </property>
+        </widget>
        </item>
        <item>
         <widget class="QLabel" name="labelYear_2">
@@ -188,7 +185,17 @@
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="lineEditSongs"/>
+        <widget class="QSpinBox" name="spinBoxSongs">
+         <property name="minimum">
+          <number>1</number>
+         </property>
+         <property name="maximum">
+          <number>200</number>
+         </property>
+         <property name="value">
+          <number>1</number>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>
@@ -254,6 +261,26 @@
     </property>
     <property name="text">
      <string/>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEditYear">
+    <property name="geometry">
+     <rect>
+      <x>600</x>
+      <y>480</y>
+      <width>76</width>
+      <height>22</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEditSongs">
+    <property name="geometry">
+     <rect>
+      <x>520</x>
+      <y>540</y>
+      <width>90</width>
+      <height>22</height>
+     </rect>
     </property>
    </widget>
   </widget>
