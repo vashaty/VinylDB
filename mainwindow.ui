@@ -7,14 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>833</width>
-    <height>628</height>
+    <height>634</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>VinylDB</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout">
+   <layout class="QVBoxLayout" name="verticalLayout" stretch="0,4,0,2">
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_3">
       <item>
@@ -31,7 +31,11 @@
        </spacer>
       </item>
       <item>
-       <widget class="QLineEdit" name="lineEditSearch"/>
+       <widget class="QLineEdit" name="lineEditSearch">
+        <property name="placeholderText">
+         <string>Search</string>
+        </property>
+       </widget>
       </item>
       <item>
        <widget class="QComboBox" name="comboBoxSearch">
@@ -106,6 +110,22 @@
      </widget>
     </item>
     <item>
+     <spacer name="verticalSpacer">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeType">
+       <enum>QSizePolicy::Minimum</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>5</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item>
      <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="4,0,3">
       <item>
        <layout class="QGridLayout" name="gridLayout">
@@ -130,7 +150,7 @@
           <item>
            <widget class="QLabel" name="labelYear_2">
             <property name="text">
-             <string>Songs:</string>
+             <string>Songs*:</string>
             </property>
            </widget>
           </item>
@@ -166,7 +186,7 @@
         <item row="1" column="0">
          <widget class="QLabel" name="labelArtist">
           <property name="text">
-           <string>Artist:</string>
+           <string>Artist*:</string>
           </property>
          </widget>
         </item>
@@ -200,7 +220,7 @@
         <item row="2" column="0">
          <widget class="QLabel" name="labelAlbum">
           <property name="text">
-           <string>Album:</string>
+           <string>Album*:</string>
           </property>
          </widget>
         </item>
@@ -214,7 +234,7 @@
         <item row="5" column="0">
          <widget class="QLabel" name="labelYear">
           <property name="text">
-           <string>Year:</string>
+           <string>Year*:</string>
           </property>
          </widget>
         </item>
@@ -253,17 +273,26 @@
        </layout>
       </item>
       <item>
-       <spacer name="horizontalSpacer_2">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
+       <widget class="QLabel" name="label">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
         </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
+        <property name="text">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Cover&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;preview:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
-       </spacer>
+        <property name="textFormat">
+         <enum>Qt::RichText</enum>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
       </item>
       <item>
        <widget class="QLabel" name="labelShowImage">
@@ -288,6 +317,25 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
+ <tabstops>
+  <tabstop>lineEditSearch</tabstop>
+  <tabstop>comboBoxSearch</tabstop>
+  <tabstop>pushButtonSearch</tabstop>
+  <tabstop>pushButtonLoad</tabstop>
+  <tabstop>tableView</tabstop>
+  <tabstop>lineEditArtist</tabstop>
+  <tabstop>lineEditAlbum</tabstop>
+  <tabstop>lineEditGenre</tabstop>
+  <tabstop>spinBoxYear</tabstop>
+  <tabstop>spinBoxSongs</tabstop>
+  <tabstop>pushButtonUpdate</tabstop>
+  <tabstop>pushButtonRemove</tabstop>
+  <tabstop>pushButtonAddNew</tabstop>
+  <tabstop>pushButtonClear</tabstop>
+  <tabstop>pushButton</tabstop>
+  <tabstop>lineEditId</tabstop>
+  <tabstop>lineEditImage</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

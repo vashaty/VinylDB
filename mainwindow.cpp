@@ -93,8 +93,8 @@ void MainWindow::clearLineEdits(){
     ui->lineEditAlbum->clear();
     ui->lineEditGenre->clear();
     ui->lineEditId->clear();
-    ui->spinBoxSongs->setValue(ui->spinBoxSongs->displayIntegerBase());
-    ui->spinBoxYear->setValue(ui->spinBoxYear->displayIntegerBase());
+    ui->spinBoxSongs->setValue(1);
+    ui->spinBoxYear->setValue(1900);
     ui->lineEditImage->clear();
     ui->labelShowImage->clear();
 }
@@ -141,7 +141,7 @@ void MainWindow::on_pushButtonAddNew_clicked()
         QMessageBox::information(this,tr("Add new"), tr("Added"));
         conn.connClose();
     }else{
-        QMessageBox::critical(this,tr("error:"), qry.lastError().text());
+        QMessageBox::critical(this,tr("Error"), qry.lastError().text());
     }
     clearLineEdits();
 
@@ -149,15 +149,16 @@ void MainWindow::on_pushButtonAddNew_clicked()
 
 void MainWindow::on_pushButtonUpdate_clicked()
 {
-   if(getSelectedRow() == -1){
-       QMessageBox::warning(this,tr("Update"), tr("Choose item to update!"));
-       return;
-   }
+    QString id = ui->lineEditId->text();
+    if(id.isEmpty()){
+        QMessageBox::warning(this,tr("Edit"), tr("Choose item to update!"));
+        return;
+    }
    if(checkIfLineEditsEmpty()) return;
 
    Database conn;
 
-   QString id, artist, album, year, songs, genre, fileName;
+   QString artist, album, year, songs, genre, fileName;
    id = ui->lineEditId->text();
    artist = ui->lineEditArtist->text();
    album = ui->lineEditAlbum->text();
@@ -340,5 +341,11 @@ int MainWindow::getSelectedRow(){
         qDebug() << index.row();
         return index.row();
     } else return -1;
+}
+
+
+void MainWindow::on_lineEditSearch_returnPressed()
+{
+    on_pushButtonSearch_clicked();
 }
 

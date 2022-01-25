@@ -45,6 +45,8 @@ private slots:
 
     int getSelectedRow();
 
+    void on_lineEditSearch_returnPressed();
+
 private:
     Ui::MainWindow *ui;
 };
