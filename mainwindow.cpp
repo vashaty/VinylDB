@@ -81,9 +81,71 @@ void MainWindow::on_tableView_clicked(const QModelIndex &index)
     drawImage();
 }
 
+void MainWindow::clearLineEdits(){
+    ui->lineEditArtist->clear();
+    ui->lineEditAlbum->clear();
+    ui->lineEditGenre->clear();
+    ui->lineEditId->clear();
+    ui->spinBoxSongs->displayIntegerBase();
+    ui->spinBoxYear->displayIntegerBase();
+    ui->lineEditImage->clear();
+    ui->labelShowImage->clear();
+}
+
+void MainWindow::on_pushButtonAddNew_clicked()
+{
+    if(checkIfLineEditsEmpty()) return;
+    Database conn;
+
+    QString artist, album, year, songs, genre, fileName;
+    artist = ui->lineEditArtist->text();
+    album = ui->lineEditAlbum->text();
+    year = ui->spinBoxYear->text();
+    songs = ui->spinBoxSongs->text();
+    genre = ui->lineEditGenre->text();
+    fileName = ui->lineEditImage->text();
+
+    if(!conn.connOpen()){
+        qDebug()<<"Failed to open database";
+        return;
+    }
+
+    if(!fileName.isEmpty()){
+        QString random = QUuid::createUuid().toString();
+        random.remove(QRegularExpression("{|}|-"));
+        if(!QDir("Covers").exists()){
+            QDir().mkdir("Covers");
+        }
+        QString newFilePath = "Covers/"+ random + ".bmp";
+        if (QFile::exists(newFilePath))
+        {
+            QFile::remove(newFilePath);
+        }
+        QFile::copy(fileName,newFilePath);
+        ui->lineEditImage->setText(newFilePath);
+        fileName = newFilePath;
+    }
+
+    conn.connOpen();
+    QSqlQuery qry;
+    qry.prepare("insert into vinyl (artist, albumName, year, songsCount, genre, imageSrc) values ('"+artist+"','"+album+"','"+year+"','"+songs+"','"+genre+"','"+fileName+"')");
+    if(qry.exec()){
+        loadTableView();
+        QMessageBox::information(this,tr("Add new"), tr("Added"));
+        conn.connClose();
+    }else{
+        QMessageBox::critical(this,tr("error:"), qry.lastError().text());
+    }
+    clearLineEdits();
+
+}
 
 void MainWindow::on_pushButtonUpdate_clicked()
 {
+   if(getSelectedRow() == -1){
+       QMessageBox::warning(this,tr("Update"), tr("Choose item to update!"));
+       return;
+   }
    if(checkIfLineEditsEmpty()) return;
 
    Database conn;
@@ -139,71 +201,13 @@ void MainWindow::on_pushButtonUpdate_clicked()
    qry2.prepare("update vinyl set artist ='"+artist+"', albumName ='"+album+"', year ='"+year+"',songsCount ='"+songs+"', genre ='"+genre+"', imageSrc ='"+fileName+"' where id ='"+id+"'");
 
    if(qry2.exec()){
+       loadTableView();
+       drawImage();
        QMessageBox::information(this,tr("Edit"), tr("Updated"));
        conn.connClose();
    }else{
        QMessageBox::critical(this,tr("error:"), qry2.lastError().text());
    }
-
-   loadTableView();
-   drawImage();
-}
-
-void MainWindow::clearLineEdits(){
-    ui->lineEditArtist->clear();
-    ui->lineEditAlbum->clear();
-    ui->lineEditGenre->clear();
-    ui->lineEditId->clear();
-    ui->spinBoxSongs->minimum();
-    ui->spinBoxYear->minimum();
-    ui->lineEditImage->clear();
-}
-
-void MainWindow::on_pushButtonAddNew_clicked()
-{
-    if(checkIfLineEditsEmpty()) return;
-    Database conn;
-
-    QString artist, album, year, songs, genre, fileName;
-    artist = ui->lineEditArtist->text();
-    album = ui->lineEditAlbum->text();
-    year = ui->spinBoxYear->text();
-    songs = ui->spinBoxSongs->text();
-    genre = ui->lineEditGenre->text();
-    fileName = ui->lineEditImage->text();
-
-    if(!conn.connOpen()){
-        qDebug()<<"Failed to open database";
-        return;
-    }
-
-    if(!fileName.isEmpty()){
-        QString random = QUuid::createUuid().toString();
-        random.remove(QRegularExpression("{|}|-"));
-        if(!QDir("Covers").exists()){
-            QDir().mkdir("Covers");
-        }
-        QString newFilePath = "Covers/"+ random + ".bmp";
-        if (QFile::exists(newFilePath))
-        {
-            QFile::remove(newFilePath);
-        }
-        QFile::copy(fileName,newFilePath);
-        ui->lineEditImage->setText(newFilePath);
-        fileName = newFilePath;
-    }
-
-    conn.connOpen();
-    QSqlQuery qry;
-    qry.prepare("insert into vinyl (artist, albumName, year, songsCount, genre, imageSrc) values ('"+artist+"','"+album+"','"+year+"','"+songs+"','"+genre+"','"+fileName+"')");
-    if(qry.exec()){
-        QMessageBox::information(this,tr("Add new"), tr("Added"));
-        conn.connClose();
-    }else{
-        QMessageBox::critical(this,tr("error:"), qry.lastError().text());
-    }
-    loadTableView();
-    clearLineEdits();
 
 }
 
@@ -211,8 +215,19 @@ void MainWindow::on_pushButtonAddNew_clicked()
 void MainWindow::on_pushButtonRemove_clicked()
 {
     Database conn;
-
     QString id = ui->lineEditId->text();
+    if(id.isEmpty()){
+        QMessageBox::warning(this,tr("Remove"), tr("Choose item to remove!"));
+        return;
+    }
+    int selectedRow = getSelectedRow();
+    if(selectedRow != -1){
+        QString imageSrc = ui->tableView->model()->index(selectedRow,6).data().toString();
+        if (QFile::exists(imageSrc))
+        {
+            QFile::remove(imageSrc);
+        }
+    }
 
     if(!conn.connOpen()){
         qDebug()<<"Failed to open database";
@@ -227,7 +242,6 @@ void MainWindow::on_pushButtonRemove_clicked()
     }else{
         QMessageBox::critical(this,tr("Error"), qry.lastError().text());
     }
-
     loadTableView();
     clearLineEdits();
 }
@@ -300,5 +314,24 @@ bool MainWindow::checkIfLineEditsEmpty(){
 void MainWindow::on_pushButtonClear_clicked()
 {
     clearLineEdits();
+}
+
+
+void MainWindow::on_pushButtonTest_clicked()
+{
+    QModelIndexList selection = ui->tableView->selectionModel()->selectedRows();
+    if(selection.count()>0){
+    QModelIndex index = selection.at(0);
+        qDebug() << index.row();
+    }
+}
+
+int MainWindow::getSelectedRow(){
+    QModelIndexList selection = ui->tableView->selectionModel()->selectedRows();
+    if(selection.count()>0){
+    QModelIndex index = selection.at(0);
+        qDebug() << index.row();
+        return index.row();
+    } else return -1;
 }
 

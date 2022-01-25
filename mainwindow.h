@@ -41,6 +41,10 @@ private slots:
 
     void on_pushButtonClear_clicked();
 
+    void on_pushButtonTest_clicked();
+
+    int getSelectedRow();
+
 private:
     Ui::MainWindow *ui;
 };
