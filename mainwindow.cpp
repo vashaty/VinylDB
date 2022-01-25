@@ -39,6 +39,7 @@ void MainWindow::loadTableView(){
 void MainWindow::on_pushButtonLoad_clicked()
 {
     loadTableView();
+    ui->lineEditSearch->clear();
 
 }
 
@@ -100,11 +101,30 @@ void MainWindow::on_pushButtonUpdate_clicked()
        qDebug()<<"Failed to open database";
        return;
    }
-   if(!fileName.isEmpty()){
+
+   conn.connOpen();
+   QSqlQuery qry;
+   qry.prepare("select imageSrc from vinyl where id='"+id+"'");
+   QString imageSrc;
+   if(qry.exec()){
+       while(qry.next())
+       imageSrc = qry.value(0).toString();
+        qDebug() << (imageSrc);
+       conn.connClose();
+   }
+   else{
+       QMessageBox::critical(this,tr("Error"),qry.lastError().text());
+   }
+
+
+
+   if(!fileName.isEmpty() && imageSrc != fileName){
+       QString random = QUuid::createUuid().toString();
+       random.remove(QRegularExpression("{|}|-"));
        if(!QDir("Covers").exists()){
            QDir().mkdir("Covers");
        }
-       QString newFilePath = "Covers/"+ album + "_" + year + ".bmp";
+       QString newFilePath = "Covers/"+ random+ ".bmp";
        if (QFile::exists(newFilePath))
        {
            QFile::remove(newFilePath);
@@ -115,15 +135,14 @@ void MainWindow::on_pushButtonUpdate_clicked()
    }
 
    conn.connOpen();
+   QSqlQuery qry2;
+   qry2.prepare("update vinyl set artist ='"+artist+"', albumName ='"+album+"', year ='"+year+"',songsCount ='"+songs+"', genre ='"+genre+"', imageSrc ='"+fileName+"' where id ='"+id+"'");
 
-   QSqlQuery qry;
-   qry.prepare("update vinyl set artist ='"+artist+"', albumName ='"+album+"', year ='"+year+"',songsCount ='"+songs+"', genre ='"+genre+"', imageSrc ='"+fileName+"' where id ='"+id+"'");
-
-   if(qry.exec()){
+   if(qry2.exec()){
        QMessageBox::information(this,tr("Edit"), tr("Updated"));
        conn.connClose();
    }else{
-       QMessageBox::critical(this,tr("error:"), qry.lastError().text());
+       QMessageBox::critical(this,tr("error:"), qry2.lastError().text());
    }
 
    loadTableView();
@@ -159,10 +178,12 @@ void MainWindow::on_pushButtonAddNew_clicked()
     }
 
     if(!fileName.isEmpty()){
+        QString random = QUuid::createUuid().toString();
+        random.remove(QRegularExpression("{|}|-"));
         if(!QDir("Covers").exists()){
             QDir().mkdir("Covers");
         }
-        QString newFilePath = "Covers/"+ album + "_" + year + ".bmp";
+        QString newFilePath = "Covers/"+ random + ".bmp";
         if (QFile::exists(newFilePath))
         {
             QFile::remove(newFilePath);
@@ -204,7 +225,7 @@ void MainWindow::on_pushButtonRemove_clicked()
         QMessageBox::information(this,tr("Remove"), tr("Removed"));
         conn.connClose();
     }else{
-        QMessageBox::critical(this,tr("error:"), qry.lastError().text());
+        QMessageBox::critical(this,tr("Error"), qry.lastError().text());
     }
 
     loadTableView();
@@ -220,8 +241,27 @@ void MainWindow::on_pushButtonSearch_clicked()
 
     conn.connOpen();
     QSqlQuery * qry = new QSqlQuery(conn.db);
-
-    qry->prepare("select id as ID, artist as Artist, albumName as Album, songsCount as Songs, year as Year, genre as Genre, imageSrc as 'Image path' from vinyl where artist like '%"+searchString+"%' or albumName like '%"+searchString+"%' or genre like '%"+searchString+"%' or year like '%"+searchString+"%'");
+    int comboBoxCurrent = ui->comboBoxSearch->currentIndex();
+    switch (comboBoxCurrent) {
+        case 0:
+            qry->prepare("select id as ID, artist as Artist, albumName as Album, songsCount as Songs, year as Year, genre as Genre, imageSrc as 'Image path' from vinyl where artist like '%"+searchString+"%' or albumName like '%"+searchString+"%' or genre like '%"+searchString+"%' or year like '%"+searchString+"%' or songsCount like '%"+searchString+"%'");
+            break;
+        case 1:
+            qry->prepare("select id as ID, artist as Artist, albumName as Album, songsCount as Songs, year as Year, genre as Genre, imageSrc as 'Image path' from vinyl where artist like '%"+searchString+"%'");
+            break;
+        case 2:
+            qry->prepare("select id as ID, artist as Artist, albumName as Album, songsCount as Songs, year as Year, genre as Genre, imageSrc as 'Image path' from vinyl where albumName like '%"+searchString+"%'");
+            break;
+        case 3:
+            qry->prepare("select id as ID, artist as Artist, albumName as Album, songsCount as Songs, year as Year, genre as Genre, imageSrc as 'Image path' from vinyl where genre like '%"+searchString+"%'");
+            break;
+        case 4:
+            qry->prepare("select id as ID, artist as Artist, albumName as Album, songsCount as Songs, year as Year, genre as Genre, imageSrc as 'Image path' from vinyl where year like '%"+searchString+"%'");
+            break;
+        case 5:
+            qry->prepare("select id as ID, artist as Artist, albumName as Album, songsCount as Songs, year as Year, genre as Genre, imageSrc as 'Image path' from vinyl where songsCount like '%"+searchString+"%'");
+            break;
+    }
 
     qry->exec();
     model->setQuery(*qry);
@@ -250,9 +290,15 @@ bool MainWindow::checkIfLineEditsEmpty(){
             ui->lineEditArtist->text().isEmpty() ||
             ui->spinBoxSongs->text().isEmpty() ||
             ui->spinBoxYear->text().isEmpty()){
-        QMessageBox::warning(this,tr("Error"), "All mandatory fields (*) are not filled!");
+        QMessageBox::warning(this,tr("Error"), "Some required fields (*) are not filled!");
         return true;
     }
     return false;
+}
+
+
+void MainWindow::on_pushButtonClear_clicked()
+{
+    clearLineEdits();
 }
 

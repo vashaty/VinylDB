@@ -39,6 +39,8 @@ private slots:
 
     bool checkIfLineEditsEmpty();
 
+    void on_pushButtonClear_clicked();
+
 private:
     Ui::MainWindow *ui;
 };

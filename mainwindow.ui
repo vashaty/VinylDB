@@ -34,6 +34,40 @@
        <widget class="QLineEdit" name="lineEditSearch"/>
       </item>
       <item>
+       <widget class="QComboBox" name="comboBoxSearch">
+        <item>
+         <property name="text">
+          <string>All</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Artist</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Album</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Genre</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Year</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Songs</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="pushButtonSearch">
         <property name="text">
          <string>Search</string>
@@ -205,6 +239,13 @@
            </widget>
           </item>
          </layout>
+        </item>
+        <item row="0" column="2">
+         <widget class="QPushButton" name="pushButtonClear">
+          <property name="text">
+           <string>CLEAR FIELDS</string>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>
