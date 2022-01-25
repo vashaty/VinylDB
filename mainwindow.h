@@ -46,7 +46,7 @@ private slots:
     int getSelectedRow();
 
     void on_lineEditSearch_returnPressed();
-
+    void resizeEvent(QResizeEvent* event);
 private:
     Ui::MainWindow *ui;
 };

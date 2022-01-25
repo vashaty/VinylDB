@@ -18,6 +18,18 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::resizeEvent(QResizeEvent* event)
+{
+   QMainWindow::resizeEvent(event);
+   ui->tableView->setColumnWidth(0, (this->width()/14)*0.5);
+   ui->tableView->setColumnWidth(1, (this->width()/14)*2);
+   ui->tableView->setColumnWidth(2, (this->width()/14)*2);
+   ui->tableView->setColumnWidth(3, (this->width()/14)*0.8);
+   ui->tableView->setColumnWidth(4, (this->width()/14)*1);
+   ui->tableView->setColumnWidth(5, (this->width()/14)*2);
+   ui->tableView->setColumnWidth(6, (this->width()/14)*5);
+}
+
 void MainWindow::loadTableView(){
     Database conn;
     QSqlQueryModel * model = new QSqlQueryModel();
@@ -34,13 +46,7 @@ void MainWindow::loadTableView(){
     conn.connClose();
 //    qDebug() << (model->rowCount());
 //    ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
-    ui->tableView->setColumnWidth(0, (this->width()/14)*0.5);
-    ui->tableView->setColumnWidth(1, (this->width()/14)*2);
-    ui->tableView->setColumnWidth(2, (this->width()/14)*2);
-    ui->tableView->setColumnWidth(3, (this->width()/14)*0.8);
-    ui->tableView->setColumnWidth(4, (this->width()/14)*1);
-    ui->tableView->setColumnWidth(5, (this->width()/14)*2);
-    ui->tableView->setColumnWidth(6, (this->width()/14)*5);
+
 }
 
 void MainWindow::on_pushButtonLoad_clicked()
