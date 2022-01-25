@@ -33,7 +33,14 @@ void MainWindow::loadTableView(){
 
     conn.connClose();
 //    qDebug() << (model->rowCount());
-    ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+//    ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
+    ui->tableView->setColumnWidth(0, (this->width()/14)*0.5);
+    ui->tableView->setColumnWidth(1, (this->width()/14)*2);
+    ui->tableView->setColumnWidth(2, (this->width()/14)*2);
+    ui->tableView->setColumnWidth(3, (this->width()/14)*0.8);
+    ui->tableView->setColumnWidth(4, (this->width()/14)*1);
+    ui->tableView->setColumnWidth(5, (this->width()/14)*2);
+    ui->tableView->setColumnWidth(6, (this->width()/14)*5);
 }
 
 void MainWindow::on_pushButtonLoad_clicked()
@@ -86,8 +93,8 @@ void MainWindow::clearLineEdits(){
     ui->lineEditAlbum->clear();
     ui->lineEditGenre->clear();
     ui->lineEditId->clear();
-    ui->spinBoxSongs->displayIntegerBase();
-    ui->spinBoxYear->displayIntegerBase();
+    ui->spinBoxSongs->setValue(ui->spinBoxSongs->displayIntegerBase());
+    ui->spinBoxYear->setValue(ui->spinBoxYear->displayIntegerBase());
     ui->lineEditImage->clear();
     ui->labelShowImage->clear();
 }
@@ -317,14 +324,14 @@ void MainWindow::on_pushButtonClear_clicked()
 }
 
 
-void MainWindow::on_pushButtonTest_clicked()
-{
-    QModelIndexList selection = ui->tableView->selectionModel()->selectedRows();
-    if(selection.count()>0){
-    QModelIndex index = selection.at(0);
-        qDebug() << index.row();
-    }
-}
+//void MainWindow::on_pushButtonTest_clicked()
+//{
+//    QModelIndexList selection = ui->tableView->selectionModel()->selectedRows();
+//    if(selection.count()>0){
+//    QModelIndex index = selection.at(0);
+//        qDebug() << index.row();
+//    }
+//}
 
 int MainWindow::getSelectedRow(){
     QModelIndexList selection = ui->tableView->selectionModel()->selectedRows();
